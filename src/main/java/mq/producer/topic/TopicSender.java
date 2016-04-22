@@ -13,7 +13,7 @@ import javax.jms.Session;
 /**
  * Created by Heisenberg on 4/21/16.
  */
-@Component
+@Component("topicSender")
 public class TopicSender {
 
     @Autowired

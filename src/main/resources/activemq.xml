@@ -19,18 +19,23 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
-       xmlns:amq="http://activemq.apache.org/schema/core" xmlns:camel="http://camel.apache.org/schema/spring"
-       xmlns:p="http://www.springframework.org/schema/p" xmlns:jms="http://www.springframework.org/schema/jms"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
-       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
-       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+       xmlns:amq="http://activemq.apache.org/schema/core"
+       xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/jms
+        http://www.springframework.org/schema/jms/spring-jms-4.0.xsd
+        http://activemq.apache.org/schema/core
+        http://activemq.apache.org/schema/core/activemq-core-5.8.0.xsd">
 
+    <amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp://localhost:61616" userName="admin" password="admin" />
 
-    <amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp:127.0.0.1:61616" userName="admin" password="admin" />
     <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
         <property name="targetConnectionFactory" ref="amqConnectionFactory"></property>
         <property name="sessionCacheSize" value="100"></property>
+        <!--<amq:transportConnector uri="tcp://127.0.0.1:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600" />-->
     </bean>
 
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -41,9 +46,9 @@
     <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
         <constructor-arg ref="cachingConnectionFactory"></constructor-arg>
         <property name="pubSubDomain" value="true"></property>
-    </bean>
 
-   <!-- <jms:listener-container destination-type="queue" container-type="default"
+    </bean>
+    <jms:listener-container destination-type="queue" container-type="default"
                             connection-factory="cachingConnectionFactory" acknowledge="auto">
         <jms:listener destination="MessageQueue" ref="queueReceiver1"></jms:listener>
         <jms:listener destination="MessageQueue" ref="queueReceiver2"></jms:listener>
@@ -53,5 +58,5 @@
                             connection-factory="cachingConnectionFactory" acknowledge="auto">
         <jms:listener destination="MessageTopic" ref="topicReceiver1"></jms:listener>
         <jms:listener destination="MessageTopic" ref="topicReceiver2"></jms:listener>
-    </jms:listener-container>-->
+    </jms:listener-container>
 </beans>
