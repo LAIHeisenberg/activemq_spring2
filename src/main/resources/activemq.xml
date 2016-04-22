@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Licensed to the Apache Software Foundation (ASF) under one or more
+    contributor license agreements.  See the NOTICE file distributed with
+    this work for additional information regarding copyright ownership.
+    The ASF licenses this file to You under the Apache License, Version 2.0
+    (the "License"); you may not use this file except in compliance with
+    the License.  You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:amq="http://activemq.apache.org/schema/core" xmlns:camel="http://camel.apache.org/schema/spring"
+       xmlns:p="http://www.springframework.org/schema/p" xmlns:jms="http://www.springframework.org/schema/jms"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+       http://activemq.apache.org/schema/core http://activemq.apache.org/schema/core/activemq-core.xsd
+       http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring.xsd http://www.springframework.org/schema/jms http://www.springframework.org/schema/jms/spring-jms.xsd">
+
+
+    <amq:connectionFactory id="amqConnectionFactory" brokerURL="tcp:127.0.0.1:61616" userName="admin" password="admin" />
+    <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
+        <property name="targetConnectionFactory" ref="amqConnectionFactory"></property>
+        <property name="sessionCacheSize" value="100"></property>
+    </bean>
+
+    <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachingConnectionFactory"></constructor-arg>
+        <property name="pubSubDomain" value="false"></property>
+    </bean>
+
+    <bean id="jmsTopicTemplate" class="org.springframework.jms.core.JmsTemplate">
+        <constructor-arg ref="cachingConnectionFactory"></constructor-arg>
+        <property name="pubSubDomain" value="true"></property>
+    </bean>
+
+   <!-- <jms:listener-container destination-type="queue" container-type="default"
+                            connection-factory="cachingConnectionFactory" acknowledge="auto">
+        <jms:listener destination="MessageQueue" ref="queueReceiver1"></jms:listener>
+        <jms:listener destination="MessageQueue" ref="queueReceiver2"></jms:listener>
+    </jms:listener-container>
+
+    <jms:listener-container destination-type="topic" container-type="default"
+                            connection-factory="cachingConnectionFactory" acknowledge="auto">
+        <jms:listener destination="MessageTopic" ref="topicReceiver1"></jms:listener>
+        <jms:listener destination="MessageTopic" ref="topicReceiver2"></jms:listener>
+    </jms:listener-container>-->
+</beans>
