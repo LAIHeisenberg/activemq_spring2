@@ -1,5 +1,6 @@
 package mq.producer.queue;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jms.core.JmsTemplate;
@@ -10,9 +11,12 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 
-/**
+/*
  * Created by Heisenberg on 4/21/16.
  */
+
+import org.springframework.stereotype.Component;
+
 @Component("queueSender")
 public class QueueSender {
 

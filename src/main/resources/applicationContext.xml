@@ -7,4 +7,5 @@
     <bean class="org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor"></bean>
     <context:component-scan base-package="mq"></context:component-scan>
 
+
 </beans>

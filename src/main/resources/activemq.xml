@@ -35,7 +35,6 @@
     <bean id="cachingConnectionFactory" class="org.springframework.jms.connection.CachingConnectionFactory">
         <property name="targetConnectionFactory" ref="amqConnectionFactory"></property>
         <property name="sessionCacheSize" value="100"></property>
-        <!--<amq:transportConnector uri="tcp://127.0.0.1:61616?maximumConnections=1000&amp;wireFormat.maxFrameSize=104857600" />-->
     </bean>
 
     <bean id="jmsQueueTemplate" class="org.springframework.jms.core.JmsTemplate">
@@ -50,8 +49,9 @@
     </bean>
     <jms:listener-container destination-type="queue" container-type="default"
                             connection-factory="cachingConnectionFactory" acknowledge="auto">
-        <jms:listener destination="MessageQueue" ref="queueReceiver1"></jms:listener>
         <jms:listener destination="MessageQueue" ref="queueReceiver2"></jms:listener>
+        <jms:listener destination="MessageQueue" ref="queueReceiver1"></jms:listener>
+
     </jms:listener-container>
 
     <jms:listener-container destination-type="topic" container-type="default"
