@@ -37,6 +37,8 @@ public class TestMVCAction {
 
     @RequestMapping("/test")
     public String test(){
+
+
         System.out.println("hello...");
         return "result";
     }
